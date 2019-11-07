@@ -1,0 +1,111 @@
+@media screen and (max-width:767px)  {
+    .back-to-top {
+        display: none !important;
+    }
+}
+
+.topButton {
+    display: none;
+}
+
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    z-index: 10000;
+    max-height: 120px;
+    transition: all .5s ease-in-out;
+    opacity: 1;
+}
+.back-to-top.animate {
+    animation: floatY 2s linear infinite;
+}
+.back-to-top:hover{
+    animation-play-state:paused;
+    -webkit-animation-play-state:paused;
+}
+
+@keyframes floatX {
+    0% {
+        -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    50% {
+        -webkit-transform: translateX(-6px);
+        -ms-transform: translateX(-6px);
+        transform: translateX(-6px)
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+        transform: translateX(0)
+    }
+}
+@keyframes floatY {
+    0% {
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    50% {
+        -webkit-transform: translateY(-6px);
+        -ms-transform: translateY(-6px);
+        transform: translateY(-6px)
+    }
+
+    100% {
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+
+/*kotori*/
+#kotori {
+    left:-15px;
+    bottom:-15px;
+    max-height:110px;
+}
+#kotori:hover {
+    left:0;
+    bottom:0;
+}
+#kotori.hidetotop {
+    left:-100%;
+    bottom:-100%;
+}
+
+/* 东方系列 */
+#reimu,#marisa,#flandre{
+	bottom:-0px;
+    right:-15px;
+    max-height:150px;
+}
+#reimu.animate,#marisa.animate,#flandre.animate {
+    animation: floatX 2s linear infinite;
+}
+#reimu:hover,#marisa:hover,#flandre:hover {
+    right:0;
+    bottom:0;
+    animation-play-state:paused;
+    -webkit-animation-play-state:paused;
+}
+#reimu.hidetotop,#marisa.hidetotop,#flandre.hidetotop {
+    right:-100%;
+}
+/* 拉姆 */
+#lamu {
+	bottom:-15px;
+    right:-15px;
+}
+#lamu:hover {
+    right:0;
+    bottom:0;
+}
+#lamu.hidetotop {
+    right:-100%;
+    bottom:-100%;
+}

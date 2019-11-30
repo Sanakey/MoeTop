@@ -5,7 +5,7 @@
  *
  * @package MoeTop
  * @author Sanakey
- * @version 1.0.0
+ * @version 1.1.0
  * @link https://keymoe.com
  */
 class MoeTop_Plugin implements Typecho_Plugin_Interface
@@ -60,7 +60,7 @@ class MoeTop_Plugin implements Typecho_Plugin_Interface
 
             echo "</div>";
         }
-        check_update("1.0.0");
+        check_update("1.1.0");
         
         // 读取模型文件夹
         $models = array();
@@ -71,14 +71,14 @@ class MoeTop_Plugin implements Typecho_Plugin_Interface
         };
 
         // 选择模型
-        $choose_models = new Typecho_Widget_Helper_Form_Element_Radio(
-            'choose_models',
+        $chooseModels = new Typecho_Widget_Helper_Form_Element_Radio(
+            'chooseModels',
             $models,
             'reimu.png',
             _t('选择模型'),
             _t('选择插件 models 目录下的模型，每个模型为一张图片。')
         );
-        $form->addInput($choose_models);
+        $form->addInput($chooseModels);
 
         //  是否开启随机
         $randomMode = new Typecho_Widget_Helper_Form_Element_Checkbox(
@@ -89,6 +89,18 @@ class MoeTop_Plugin implements Typecho_Plugin_Interface
             _t('勾选此选项后，前面选择的模型将会失效，每次刷新页面将会随机加载返回顶部图片。')
         );
         $form->addInput($randomMode);
+
+        //  是否在移动端显示
+        $isShowMobile = new Typecho_Widget_Helper_Form_Element_Radio(
+            'isShowMobile',
+            array(
+                '0' => _t('否'),
+                '1' => _t('是'),
+            ),
+            '1',
+            _t('是否在移动端显示')
+        );
+        $form->addInput($isShowMobile);
 
         // 是否加载jq
         $jquery = new Typecho_Widget_Helper_Form_Element_Radio(
@@ -159,6 +171,7 @@ class MoeTop_Plugin implements Typecho_Plugin_Interface
         $options = Helper::options();
         $path = $options->pluginUrl . '/MoeTop/models/';
         $randomMode = $options->plugin('MoeTop')->randomMode;
+        $isShowMobile = $options->plugin('MoeTop')->isShowMobile;
 
         // 读取模型文件夹
         $models = array();
@@ -168,15 +181,27 @@ class MoeTop_Plugin implements Typecho_Plugin_Interface
             $single = substr($value, 26);
             $models[$key] = $single;
         };
-        if ($randomMode) {
-            $choose_models = $models[mt_rand( 0, count($models) - 1)];
+        if ($isShowMobile) {
+            $css = '';
         } else {
-            $choose_models = $options->plugin('MoeTop')->choose_models;
+            $css = '<style>
+            @media screen and (max-width:767px)  {
+                .back-to-top {
+                    display: none !important;
+                }
+            }
+        </style>';
         }
-        $models_id = preg_replace("/\.(?:gif|png|jpg|jpeg)$/i","",$choose_models);
+        if ($randomMode) {
+            $chooseModels = $models[mt_rand( 0, count($models) - 1)];
+        } else {
+            $chooseModels = $options->plugin('MoeTop')->chooseModels;
+        }
+        $models_id = preg_replace("/\.(?:gif|png|jpg|jpeg)$/i","",$chooseModels);
         
         echo <<<HTML
-                <img class="back-to-top hidetotop" id="{$models_id}" src="{$path}{$choose_models}" alt="{$choose_models}" />
+                <img class="back-to-top hidetotop" id="{$models_id}" src="{$path}{$chooseModels}" alt="{$chooseModels}" />
+                $css
                 <script type="text/javascript">
                 $(function () {
                     $(window).scroll(function () {
